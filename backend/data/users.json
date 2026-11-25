@@ -17,8 +17,8 @@
     "full_name": "Alex Green",
     "hashed_password": "$2b$12$VIsBuAk.tiVksQ9lBePdl.C0rFLvHsy.hRYVH4wc6tXdBGIkZgJqO",
     "role": "user",
-    "eco_points": 180,
-    "scans_count": 12,
+    "eco_points": 210,
+    "scans_count": 16,
     "avatar_url": null,
     "bio": "Eco warrior committed to zero-waste urban living.",
     "created_at": "2026-11-25 06:00:22.909586+00:00"
@@ -46,5 +46,17 @@
     "avatar_url": null,
     "bio": "Passionate about waste segregation and sustainable living.",
     "created_at": "2026-11-25 06:21:47.179191+00:00"
+  },
+  {
+    "_id": "887e619a-a48d-4c1e-969e-debb259f0492",
+    "email": "test.user_1795594631@example.com",
+    "full_name": "Test Eco Citizen",
+    "hashed_password": "$2b$12$E6Wt7CcP46/nsieHJBj0getXJKVtMqX3yfPFGUqAMVrhHdSwtHSXO",
+    "role": "user",
+    "eco_points": 10,
+    "scans_count": 2,
+    "avatar_url": null,
+    "bio": "Passionate about waste segregation and sustainable living.",
+    "created_at": "2026-11-25 08:17:11.430579+00:00"
   }
 ]

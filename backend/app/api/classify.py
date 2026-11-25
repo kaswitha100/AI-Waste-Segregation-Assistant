@@ -73,6 +73,8 @@ async def classify_upload_image(
                     "eco_points": result.eco_points_earned
                 }
             }
+        )
+
     result.id = record_id
     result._id = record_id
     return result
