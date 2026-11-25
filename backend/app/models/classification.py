@@ -39,7 +39,8 @@ class HistoryRecordCreate(BaseModel):
     notes: Optional[str] = None
 
 class HistoryRecordResponse(BaseModel):
-    id: str = Field(alias="_id")
+    id: str
+    _id: Optional[str] = None
     user_id: Optional[str] = None
     item_name: str
     category: str

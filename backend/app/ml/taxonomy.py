@@ -195,8 +195,9 @@ def map_prediction_to_waste(predicted_label: str, confidence: float):
     label_lower = predicted_label.lower().replace(" ", "_")
 
     # Check if object is clearly non-waste or if confidence is too low
+    label_tokens = set(label_lower.split("_"))
     for non_waste in NON_WASTE_KEYWORDS:
-        if non_waste in label_lower and confidence > 0.40:
+        if (non_waste in label_tokens or non_waste == label_lower) and confidence > 0.40:
             return {
                 "category": CATEGORIES["UNCERTAIN"],
                 "item_name": f"Non-Waste Object ({predicted_label.title()})",

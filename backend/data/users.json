@@ -22,5 +22,29 @@
     "avatar_url": null,
     "bio": "Eco warrior committed to zero-waste urban living.",
     "created_at": "2026-11-25 06:00:22.909586+00:00"
+  },
+  {
+    "_id": "584a2b98-babe-4a7c-8447-ac0fcb394bcb",
+    "email": "test.user_1795587472@example.com",
+    "full_name": "Test Eco Citizen",
+    "hashed_password": "$2b$12$VXeGUrX.M8.FxtnMVL9nn.YUrJkuR/.qDcVeefsrECp1QD5RZ21Oa",
+    "role": "user",
+    "eco_points": 10,
+    "scans_count": 2,
+    "avatar_url": null,
+    "bio": "Passionate about waste segregation and sustainable living.",
+    "created_at": "2026-11-25 06:17:52.631862+00:00"
+  },
+  {
+    "_id": "9f024ab4-6a16-4af6-9186-fccb45dc82d6",
+    "email": "test.user_1795587707@example.com",
+    "full_name": "Test Eco Citizen",
+    "hashed_password": "$2b$12$TZVfijLVqgxPtlWzIamojeUTroKm9JrBo0FD5trI.Po92MUn9NzYC",
+    "role": "user",
+    "eco_points": 10,
+    "scans_count": 2,
+    "avatar_url": null,
+    "bio": "Passionate about waste segregation and sustainable living.",
+    "created_at": "2026-11-25 06:21:47.179191+00:00"
   }
 ]

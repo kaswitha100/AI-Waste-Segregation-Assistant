@@ -40,6 +40,45 @@ class ResilientAsyncCollection:
         except Exception as e:
             print(f"[FallbackDB Error saving {self.name}]: {e}")
 
+    @staticmethod
+    def _matches_query(doc: Dict[str, Any], query: Dict[str, Any]) -> bool:
+        if not query:
+            return True
+
+        # Handle top-level $or
+        if "$or" in query:
+            sub_queries = query["$or"]
+            or_match = False
+            for sq in sub_queries:
+                if ResilientAsyncCollection._matches_query(doc, sq):
+                    or_match = True
+                    break
+            if not or_match:
+                return False
+
+        # Handle field-level conditions
+        for k, v in query.items():
+            if k == "$or":
+                continue
+
+            doc_val = doc.get(k)
+            if isinstance(v, dict):
+                if "$regex" in v:
+                    regex_val = str(v["$regex"]).lower()
+                    if regex_val not in str(doc_val or "").lower():
+                        return False
+                if "$in" in v:
+                    if doc_val not in v["$in"]:
+                        return False
+                if "$ne" in v:
+                    if doc_val == v["$ne"]:
+                        return False
+            else:
+                if doc_val != v:
+                    return False
+
+        return True
+
     async def insert_one(self, document: Dict[str, Any]):
         async with self._lock:
             doc = dict(document)
@@ -54,12 +93,7 @@ class ResilientAsyncCollection:
     async def find_one(self, query: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         async with self._lock:
             for doc in self._items.values():
-                match = True
-                for k, v in query.items():
-                    if doc.get(k) != v:
-                        match = False
-                        break
-                if match:
+                if self._matches_query(doc, query):
                     return dict(doc)
             return None
 
@@ -69,12 +103,7 @@ class ResilientAsyncCollection:
     async def update_one(self, query: Dict[str, Any], update: Dict[str, Any]):
         async with self._lock:
             for doc_id, doc in self._items.items():
-                match = True
-                for k, v in query.items():
-                    if doc.get(k) != v:
-                        match = False
-                        break
-                if match:
+                if self._matches_query(doc, query):
                     if "$set" in update:
                         doc.update(update["$set"])
                     if "$inc" in update:
@@ -87,12 +116,7 @@ class ResilientAsyncCollection:
     async def delete_one(self, query: Dict[str, Any]):
         async with self._lock:
             for doc_id, doc in list(self._items.items()):
-                match = True
-                for k, v in query.items():
-                    if doc.get(k) != v:
-                        match = False
-                        break
-                if match:
+                if self._matches_query(doc, query):
                     del self._items[doc_id]
                     self._save()
                     return type("DeleteResult", (), {"deleted_count": 1})()
@@ -104,12 +128,7 @@ class ResilientAsyncCollection:
                 return len(self._items)
             count = 0
             for doc in self._items.values():
-                match = True
-                for k, v in query.items():
-                    if doc.get(k) != v:
-                        match = False
-                        break
-                if match:
+                if self._matches_query(doc, query):
                     count += 1
             return count
 
@@ -139,31 +158,12 @@ class ResilientAsyncCursor:
         async with self.collection._lock:
             results = []
             for doc in self.collection._items.values():
-                match = True
-                for k, v in self.query.items():
-                    if k.startswith("$"):
-                        continue
-                    if isinstance(v, dict):
-                        if "$regex" in v:
-                            regex_val = v["$regex"]
-                            doc_val = str(doc.get(k, ""))
-                            if regex_val.lower() not in doc_val.lower():
-                                match = False
-                                break
-                        elif "$in" in v:
-                            if doc.get(k) not in v["$in"]:
-                                match = False
-                                break
-                    else:
-                        if doc.get(k) != v:
-                            match = False
-                            break
-                if match:
+                if self.collection._matches_query(doc, self.query):
                     results.append(dict(doc))
 
             if self._sort_field:
                 reverse = self._sort_dir == -1
-                results.sort(key=lambda x: x.get(self._sort_field) or "", reverse=reverse)
+                results.sort(key=lambda x: str(x.get(self._sort_field) or ""), reverse=reverse)
 
             if self._skip_val:
                 results = results[self._skip_val:]

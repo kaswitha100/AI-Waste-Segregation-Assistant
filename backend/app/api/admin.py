@@ -118,9 +118,11 @@ async def list_all_classifications(
 
     items = []
     for d in docs:
+        rec_id = str(d.get("_id") or d.get("id"))
         items.append(
             HistoryRecordResponse(
-                _id=str(d["_id"]),
+                id=rec_id,
+                _id=rec_id,
                 user_id=d.get("user_id"),
                 item_name=d.get("item_name"),
                 category=d.get("category"),

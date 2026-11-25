@@ -36,9 +36,11 @@ async def get_history(
 
     items = []
     for d in raw_docs:
+        rec_id = str(d.get("_id") or d.get("id"))
         items.append(
             HistoryRecordResponse(
-                _id=str(d["_id"]),
+                id=rec_id,
+                _id=rec_id,
                 user_id=d.get("user_id"),
                 item_name=d.get("item_name", "Unknown Item"),
                 category=d.get("category", "Uncertain / Mixed Waste"),
@@ -74,8 +76,10 @@ async def get_history_detail(
     if current_user and doc.get("user_id") and doc.get("user_id") != current_user.id and current_user.role != "admin":
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Access denied.")
 
+    rec_id = str(doc.get("_id") or doc.get("id"))
     return HistoryRecordResponse(
-        _id=str(doc["_id"]),
+        id=rec_id,
+        _id=rec_id,
         user_id=doc.get("user_id"),
         item_name=doc.get("item_name"),
         category=doc.get("category"),

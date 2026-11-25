@@ -60,3 +60,66 @@ def test_synthetic_image_classification():
     assert 0.0 <= result.confidence <= 1.0
     assert result.disposal_guide is not None
     assert len(result.disposal_guide.steps) > 0
+
+@pytest.mark.anyio
+async def test_database_operations():
+    from app.db.database import ResilientAsyncCollection
+    import tempfile
+    import shutil
+
+    temp_dir = tempfile.mkdtemp()
+    try:
+        col = ResilientAsyncCollection("test_col", data_dir=temp_dir)
+        
+        # Test Insert
+        res1 = await col.insert_one({"_id": "item1", "name": "Plastic Bottle", "category": "Recyclable Waste", "count": 1})
+        res2 = await col.insert_one({"_id": "item2", "name": "Banana Peel", "category": "Wet Waste", "count": 2})
+        assert res1.inserted_id == "item1"
+        assert res2.inserted_id == "item2"
+
+        # Test Count
+        count_all = await col.count_documents({})
+        assert count_all == 2
+
+        # Test Find One
+        doc = await col.find_one({"name": "Plastic Bottle"})
+        assert doc is not None
+        assert doc["_id"] == "item1"
+
+        # Test Update $set and $inc
+        await col.update_one({"_id": "item1"}, {"$set": {"verified": True}, "$inc": {"count": 5}})
+        updated = await col.find_one({"_id": "item1"})
+        assert updated["verified"] is True
+        assert updated["count"] == 6
+
+        # Test Find with $regex
+        regex_items = await col.find({"name": {"$regex": "bottle"}}).to_list()
+        assert len(regex_items) == 1
+        assert regex_items[0]["_id"] == "item1"
+
+        # Test Find with $or
+        or_items = await col.find({"$or": [{"category": "Wet Waste"}, {"category": "Nonexistent"}]}).to_list()
+        assert len(or_items) == 1
+        assert or_items[0]["_id"] == "item2"
+
+        # Test Delete
+        del_res = await col.delete_one({"_id": "item1"})
+        assert del_res.deleted_count == 1
+        assert await col.count_documents({}) == 1
+
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)
+
+def test_disposal_guide_generation():
+    from app.ml.disposal_guide import get_disposal_guide_for_category
+    
+    for cat in ["Wet Waste", "Recyclable Waste", "Hazardous Waste", "Dry Waste", "Uncertain / Mixed Waste"]:
+        guide = get_disposal_guide_for_category(cat)
+        assert guide.bin_name != ""
+        assert guide.bin_color != ""
+        assert len(guide.steps) >= 3
+        assert len(guide.dos) >= 2
+        assert len(guide.donts) >= 2
+        assert guide.environmental_impact != ""
+        assert guide.decomposition_time != ""
+
