@@ -1,0 +1,22 @@
+{
+  "name": "ai-waste-segregation-assistant-root",
+  "version": "1.0.0",
+  "description": "AI Waste Segregation Assistant - Production Full-Stack Web Application",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload --port 8000",
+    "build:frontend": "cd frontend && npm run build",
+    "test:backend": "cd backend && python -m pytest tests/test_backend.py"
+  },
+  "keywords": [
+    "ai",
+    "waste-segregation",
+    "recycling",
+    "fastapi",
+    "react",
+    "deep-learning",
+    "mobilenet"
+  ],
+  "author": "Antigravity AI",
+  "license": "MIT"
+}

@@ -1,0 +1,26 @@
+[
+  {
+    "_id": "462fb908-2d32-48bc-9b22-4b043f931c71",
+    "email": "admin@wastesegregation.ai",
+    "full_name": "Chief Sustainability Officer",
+    "hashed_password": "$2b$12$7lGoAdFslhX1NVEBjehI6O5EupjHzsT0ZeZloE1ix3XGjnoc9Atnm",
+    "role": "admin",
+    "eco_points": 450,
+    "scans_count": 28,
+    "avatar_url": null,
+    "bio": "Lead administrator for Waste Segregation and Circular Economy operations.",
+    "created_at": "2026-11-25 06:00:20.114285+00:00"
+  },
+  {
+    "_id": "c70a9f20-2107-42a6-9df5-fe8674d4ae12",
+    "email": "eco.user@example.com",
+    "full_name": "Alex Green",
+    "hashed_password": "$2b$12$VIsBuAk.tiVksQ9lBePdl.C0rFLvHsy.hRYVH4wc6tXdBGIkZgJqO",
+    "role": "user",
+    "eco_points": 180,
+    "scans_count": 12,
+    "avatar_url": null,
+    "bio": "Eco warrior committed to zero-waste urban living.",
+    "created_at": "2026-11-25 06:00:22.909586+00:00"
+  }
+]
