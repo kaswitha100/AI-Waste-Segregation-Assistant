@@ -18,6 +18,8 @@ class PredictionItem(BaseModel):
     category: str
 
 class ClassificationResponse(BaseModel):
+    id: Optional[str] = None
+    _id: Optional[str] = None
     item_name: str
     category: str
     confidence: float

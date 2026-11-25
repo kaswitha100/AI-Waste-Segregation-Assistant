@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { 
   CheckCircle2, 
@@ -11,15 +11,31 @@ import {
   X, 
   Info, 
   Award,
-  ArrowRight
+  ArrowRight,
+  ThumbsUp,
+  ThumbsDown
 } from 'lucide-react';
 import { getCategoryMeta } from '../../utils/wasteCategories';
+import { historyAPI } from '../../services/api';
 
 const ClassificationResult = ({ result, onScanAgain, onFeedbackSubmitted }) => {
   if (!result) return null;
 
+  const [feedback, setFeedback] = useState(null);
   const categoryMeta = getCategoryMeta(result.category);
   const confidencePercent = Math.round((result.confidence || 0) * 100);
+
+  const handleFeedback = async (type) => {
+    setFeedback(type);
+    const recId = result.id || result._id;
+    if (recId) {
+      try {
+        await historyAPI.submitFeedback(recId, type);
+      } catch (err) {
+        console.error('Feedback error:', err);
+      }
+    }
+  };
 
   // Trigger eco confetti when a high-confidence recyclable or wet waste item is classified
   useEffect(() => {
@@ -234,14 +250,48 @@ const ClassificationResult = ({ result, onScanAgain, onFeedbackSubmitted }) => {
           </div>
         )}
 
-        {/* Scan Again Action Button */}
-        <div className="pt-4 flex items-center justify-between border-t border-slate-100">
-          <p className="text-xs text-slate-400">
-            Classification saved to your history stream.
-          </p>
+        {/* Instant Accuracy Feedback & Scan Again Actions */}
+        <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">
+          <div className="flex items-center space-x-3 text-xs text-slate-500">
+            <span>Accurate prediction?</span>
+            <div className="flex items-center space-x-1.5">
+              <button
+                type="button"
+                onClick={() => handleFeedback('accurate')}
+                className={`px-2.5 py-1 rounded-lg border text-xs transition-all flex items-center space-x-1 ${
+                  feedback === 'accurate'
+                    ? 'bg-emerald-100 border-emerald-300 text-emerald-800 font-bold'
+                    : 'bg-white border-slate-200 hover:bg-emerald-50 text-slate-600'
+                }`}
+                title="Accurate prediction"
+              >
+                <ThumbsUp className="w-3.5 h-3.5 text-emerald-600" />
+                <span>Yes</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleFeedback('inaccurate')}
+                className={`px-2.5 py-1 rounded-lg border text-xs transition-all flex items-center space-x-1 ${
+                  feedback === 'inaccurate'
+                    ? 'bg-red-100 border-red-300 text-red-800 font-bold'
+                    : 'bg-white border-slate-200 hover:bg-red-50 text-slate-600'
+                }`}
+                title="Report inaccurate prediction"
+              >
+                <ThumbsDown className="w-3.5 h-3.5 text-red-500" />
+                <span>No</span>
+              </button>
+            </div>
+            {feedback && (
+              <span className="text-[11px] text-emerald-600 font-semibold animate-fadeIn">
+                Feedback saved!
+              </span>
+            )}
+          </div>
+
           <button
             onClick={onScanAgain}
-            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition-all flex items-center space-x-2 hover:scale-[1.02]"
+            className="w-full sm:w-auto px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm rounded-xl shadow-md transition-all flex items-center justify-center space-x-2 hover:scale-[1.02]"
           >
             <span>Scan Another Item</span>
             <ArrowRight className="w-4 h-4" />
