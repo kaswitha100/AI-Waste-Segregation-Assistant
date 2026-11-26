@@ -1,0 +1,5 @@
+{
+  "name": "ai-waste-assistant-plugin",
+  "description": "Production AI Waste Segregation Assistant plugin for automated validation, classification guidance, and deployment orchestration.",
+  "version": "1.0.0"
+}
