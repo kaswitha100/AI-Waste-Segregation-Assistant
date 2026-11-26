@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
@@ -18,6 +18,9 @@ import ProfilePage from './pages/ProfilePage';
 import AdminPage from './pages/AdminPage';
 
 function App() {
+  const isGitHubPages = typeof window !== 'undefined' && window.location.hostname.includes('github.io');
+  const Router = isGitHubPages ? HashRouter : BrowserRouter;
+
   return (
     <AuthProvider>
       <Router>
