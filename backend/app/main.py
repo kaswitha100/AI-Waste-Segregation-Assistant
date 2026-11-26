@@ -180,6 +180,7 @@ origins = [
     "http://127.0.0.1:4173",
     "https://ai-waste-segregation-assistant.vercel.app",
     "https://ai-waste-segregation-backend.onrender.com",
+    "https://kaswitha100.github.io",
 ]
 if isinstance(settings.CORS_ORIGINS, list):
     origins.extend(settings.CORS_ORIGINS)
@@ -191,7 +192,7 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|.*\.vercel\.app|.*\.onrender\.com)(:[0-9]+)?",
+    allow_origin_regex=r"https?://(localhost|127\.0\.0\.1|.*\.vercel\.app|.*\.onrender\.com|.*\.github\.io)(:[0-9]+)?",
 )
 
 # Mount API Routers
