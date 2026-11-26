@@ -20,8 +20,12 @@ export const AuthProvider = ({ children }) => {
           setUser(res.data);
           localStorage.setItem('waste_ai_user', JSON.stringify(res.data));
         } catch (err) {
-          console.warn('[AuthContext] Session invalid or expired.');
-          logout();
+          if (err?.response?.status === 401) {
+            console.warn('[AuthContext] Session expired.');
+            logout();
+          } else {
+            console.warn('[AuthContext] Backend offline or sleeping; retaining cached session.');
+          }
         }
       }
       setLoading(false);

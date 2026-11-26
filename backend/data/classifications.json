@@ -617,5 +617,73 @@
     "notes": null,
     "feedback": "accurate",
     "timestamp": "2026-11-26 06:42:17.240562+00:00"
+  },
+  {
+    "_id": "ccfb1d81-7b2f-42e9-a55e-60f34753e074",
+    "user_id": "77406577-467a-4c94-b06a-c69161cc0f09",
+    "item_name": "Unrecognized Waste Item",
+    "category": "Uncertain / Mixed Waste",
+    "confidence": 0.0691,
+    "is_uncertain": true,
+    "disposal_guide": {
+      "bin_name": "Manual Inspection / Multi-Sort Area",
+      "bin_color": "Yellow",
+      "primary_action": "Inspect Material Composition Before Disposal",
+      "steps": [
+        "Check the recycling resin code on the bottom of the item (numbers 1 through 7).",
+        "Separate composite materials (e.g., detach paper label from plastic cup).",
+        "If mostly organic food material, discard into Green Bin.",
+        "If clean recyclable rigid plastic/metal/paper, discard into Blue Bin.",
+        "If containing circuit boards, wires, or batteries, treat as Red Bin Hazardous."
+      ],
+      "dos": [
+        "Do perform a visual test: is it organic, clean paper, metal, or electronic?",
+        "Do ask your local municipality when in doubt."
+      ],
+      "donts": [
+        "Don't guess randomly and throw non-recyclables into the blue bin (wishcycling).",
+        "Don't dispose hazardous materials in ordinary trash."
+      ],
+      "environmental_impact": "Careful sorting prevents batch contamination at municipal recycling facilities.",
+      "decomposition_time": "Varies by material composition"
+    },
+    "image_preview": "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCADgAOADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCSiiivDPkgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=",
+    "notes": "Test Upload",
+    "feedback": null,
+    "timestamp": "2026-11-26 11:43:33.422222+00:00"
+  },
+  {
+    "_id": "f9346959-cca9-495c-aade-13cd1cfcc876",
+    "user_id": "77406577-467a-4c94-b06a-c69161cc0f09",
+    "item_name": "Unrecognized Waste Item",
+    "category": "Uncertain / Mixed Waste",
+    "confidence": 0.0691,
+    "is_uncertain": true,
+    "disposal_guide": {
+      "bin_name": "Manual Inspection / Multi-Sort Area",
+      "bin_color": "Yellow",
+      "primary_action": "Inspect Material Composition Before Disposal",
+      "steps": [
+        "Check the recycling resin code on the bottom of the item (numbers 1 through 7).",
+        "Separate composite materials (e.g., detach paper label from plastic cup).",
+        "If mostly organic food material, discard into Green Bin.",
+        "If clean recyclable rigid plastic/metal/paper, discard into Blue Bin.",
+        "If containing circuit boards, wires, or batteries, treat as Red Bin Hazardous."
+      ],
+      "dos": [
+        "Do perform a visual test: is it organic, clean paper, metal, or electronic?",
+        "Do ask your local municipality when in doubt."
+      ],
+      "donts": [
+        "Don't guess randomly and throw non-recyclables into the blue bin (wishcycling).",
+        "Don't dispose hazardous materials in ordinary trash."
+      ],
+      "environmental_impact": "Careful sorting prevents batch contamination at municipal recycling facilities.",
+      "decomposition_time": "Varies by material composition"
+    },
+    "image_preview": "/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCADgAOADASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwCSiiivDPkgooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigD/9k=",
+    "notes": "Camera snapshot verification",
+    "feedback": "accurate",
+    "timestamp": "2026-11-26 11:43:33.746810+00:00"
   }
 ]
