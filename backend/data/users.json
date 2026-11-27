@@ -70,5 +70,17 @@
     "avatar_url": null,
     "bio": "Passionate about waste segregation and sustainable living.",
     "created_at": "2026-11-26 11:43:30.682450+00:00"
+  },
+  {
+    "_id": "f1dbf8ed-d419-4544-9cae-c3700b1dae96",
+    "email": "test.user_1795764130@example.com",
+    "full_name": "Test Eco Citizen",
+    "hashed_password": "$2b$12$LY8/poZZcVhinQ971rJlru/KmtQmmXY7FflneO8xmMICrcuEvjvNa",
+    "role": "user",
+    "eco_points": 10,
+    "scans_count": 2,
+    "avatar_url": null,
+    "bio": "Passionate about waste segregation and sustainable living.",
+    "created_at": "2026-11-27 07:22:10.375517+00:00"
   }
 ]

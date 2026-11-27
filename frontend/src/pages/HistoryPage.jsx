@@ -37,10 +37,21 @@ const HistoryPage = () => {
         search: searchQuery.trim() || undefined
       };
       const res = await historyAPI.getHistory(params);
-      setHistory(res.data.items || []);
-      setTotal(res.data.total || 0);
+      let items = [];
+      let totalCount = 0;
+      if (Array.isArray(res?.data)) {
+        items = res.data;
+        totalCount = res.data.length;
+      } else if (res?.data?.items && Array.isArray(res.data.items)) {
+        items = res.data.items;
+        totalCount = res.data.total ?? items.length;
+      }
+      setHistory(items);
+      setTotal(totalCount);
     } catch (err) {
       console.error('[History Error]:', err);
+      setHistory([]);
+      setTotal(0);
     } finally {
       setLoading(false);
     }
@@ -178,12 +189,13 @@ const HistoryPage = () => {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           {history.map((item) => {
-            const meta = getCategoryMeta(item.category);
-            const conf = Math.round(item.confidence * 100);
+            const meta = getCategoryMeta(item.category || 'Dry Waste');
+            const conf = Math.round((typeof item.confidence === 'number' ? item.confidence : 0.85) * 100);
+            const itemId = item.id || item._id || Math.random().toString();
 
             return (
               <div
-                key={item.id}
+                key={itemId}
                 className="bg-white rounded-2xl border border-slate-200/90 shadow-xs hover:shadow-md transition-shadow flex flex-col justify-between overflow-hidden group"
               >
                 {/* Header color accent */}

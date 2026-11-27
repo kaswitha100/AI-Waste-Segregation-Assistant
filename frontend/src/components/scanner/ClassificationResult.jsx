@@ -88,7 +88,7 @@ const ClassificationResult = ({ result, onScanAgain, onFeedbackSubmitted }) => {
             <span>+{result.eco_points_earned || 10} Eco Points</span>
           </div>
           <div className="px-3.5 py-1.5 rounded-full bg-white text-slate-800 text-xs font-bold shadow-sm">
-            {result.disposal_guide?.bin_color || categoryMeta.binName} Bin
+            {result.disposal_guide?.bin_color || result.disposal_guide?.bin_name || categoryMeta.binName} Bin
           </div>
         </div>
       </div>
@@ -102,10 +102,10 @@ const ClassificationResult = ({ result, onScanAgain, onFeedbackSubmitted }) => {
               Identified Waste Item
             </span>
             <h3 className="text-2xl font-bold text-slate-900 mt-0.5">
-              {result.item_name}
+              {result.item_name || 'Unidentified Waste Object'}
             </h3>
             <p className="text-sm text-slate-500 mt-1">
-              {result.disposal_guide?.primary_action}
+              {result.disposal_guide?.primary_action || result.disposal_guide?.primary_rule || 'Proper segregation and disposal required.'}
             </p>
           </div>
 
@@ -170,85 +170,105 @@ const ClassificationResult = ({ result, onScanAgain, onFeedbackSubmitted }) => {
         )}
 
         {/* Step-by-Step Proper Disposal Instructions */}
-        {result.disposal_guide && (
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
-                1
-              </div>
-              <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
-                Proper Disposal Instructions
-              </h4>
-            </div>
+        {(() => {
+          const guide = result.disposal_guide || {};
+          const stepsList = Array.isArray(guide.steps) && guide.steps.length > 0 
+            ? guide.steps 
+            : Array.isArray(guide.step_by_step_instructions) && guide.step_by_step_instructions.length > 0
+            ? guide.step_by_step_instructions
+            : [guide.primary_action || guide.primary_rule || 'Deposit item into designated container cleanly.'];
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {result.disposal_guide.steps.map((step, idx) => (
-                <div 
-                  key={idx}
-                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs text-slate-700 flex items-start space-x-3 leading-relaxed"
-                >
-                  <span className="w-5 h-5 rounded-full bg-white border border-slate-300 font-bold text-slate-600 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
-                    {idx + 1}
+          const dosList = Array.isArray(guide.dos) && guide.dos.length > 0 
+            ? guide.dos 
+            : ['Ensure item is separated from other streams.', 'Keep recyclables clean and dry before disposal.'];
+
+          const dontsList = Array.isArray(guide.donts) && guide.donts.length > 0 
+            ? guide.donts 
+            : ['Do not mix hazardous materials with organic compost.', 'Avoid contaminating clean paper with liquids.'];
+
+          const envImpact = guide.environmental_impact || guide.environmental_impact_summary || 'Diverts solid waste from overflowing municipal landfills and cuts carbon emissions.';
+          const decompTime = guide.decomposition_time || guide.decomposition_time_estimate || 'Varies by material composition';
+
+          return (
+            <div className="space-y-4">
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs">
+                  1
+                </div>
+                <h4 className="text-sm font-bold text-slate-900 uppercase tracking-wider">
+                  Proper Disposal Instructions
+                </h4>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {stepsList.map((step, idx) => (
+                  <div 
+                    key={idx}
+                    className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/70 text-xs text-slate-700 flex items-start space-x-3 leading-relaxed"
+                  >
+                    <span className="w-5 h-5 rounded-full bg-white border border-slate-300 font-bold text-slate-600 flex items-center justify-center text-[10px] flex-shrink-0 mt-0.5">
+                      {idx + 1}
+                    </span>
+                    <span>{step}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Do's and Don'ts Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                {/* DOs */}
+                <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 space-y-2">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-emerald-800 uppercase tracking-wider">
+                    <Check className="w-4 h-4 text-emerald-600" />
+                    <span>Recommended (Do's)</span>
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-emerald-900/80">
+                    {dosList.map((item, idx) => (
+                      <li key={idx} className="flex items-start space-x-2">
+                        <span className="text-emerald-500 font-bold">•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {/* DONTs */}
+                <div className="p-4 rounded-2xl bg-red-50/80 border border-red-200/80 space-y-2">
+                  <div className="flex items-center space-x-1.5 text-xs font-bold text-red-800 uppercase tracking-wider">
+                    <X className="w-4 h-4 text-red-600" />
+                    <span>Avoid (Don'ts)</span>
+                  </div>
+                  <ul className="space-y-1.5 text-xs text-red-900/80">
+                    {dontsList.map((item, idx) => (
+                      <li key={idx} className="flex items-start space-x-2">
+                        <span className="text-red-500 font-bold">•</span>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              {/* Environmental Impact & Decomposition Notice */}
+              <div className="p-4 rounded-2xl bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
+                <div className="space-y-1">
+                  <span className="font-bold text-teal-900 uppercase tracking-wider text-[11px] block">
+                    Environmental Impact & Footprint
                   </span>
-                  <span>{step}</span>
+                  <p className="text-teal-800 leading-relaxed">
+                    {envImpact}
+                  </p>
                 </div>
-              ))}
-            </div>
-
-            {/* Do's and Don'ts Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-              {/* DOs */}
-              <div className="p-4 rounded-2xl bg-emerald-50/80 border border-emerald-200/80 space-y-2">
-                <div className="flex items-center space-x-1.5 text-xs font-bold text-emerald-800 uppercase tracking-wider">
-                  <Check className="w-4 h-4 text-emerald-600" />
-                  <span>Recommended (Do's)</span>
+                <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-teal-200 text-teal-900 flex-shrink-0 text-center">
+                  <span className="block text-[10px] font-semibold text-slate-500 uppercase">
+                    Decomposition Time
+                  </span>
+                  <span className="font-bold text-xs">{decompTime}</span>
                 </div>
-                <ul className="space-y-1.5 text-xs text-emerald-900/80">
-                  {result.disposal_guide.dos.map((item, idx) => (
-                    <li key={idx} className="flex items-start space-x-2">
-                      <span className="text-emerald-500 font-bold">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              {/* DONTs */}
-              <div className="p-4 rounded-2xl bg-red-50/80 border border-red-200/80 space-y-2">
-                <div className="flex items-center space-x-1.5 text-xs font-bold text-red-800 uppercase tracking-wider">
-                  <X className="w-4 h-4 text-red-600" />
-                  <span>Avoid (Don'ts)</span>
-                </div>
-                <ul className="space-y-1.5 text-xs text-red-900/80">
-                  {result.disposal_guide.donts.map((item, idx) => (
-                    <li key={idx} className="flex items-start space-x-2">
-                      <span className="text-red-500 font-bold">•</span>
-                      <span>{item}</span>
-                    </li>
-                  ))}
-                </ul>
               </div>
             </div>
-
-            {/* Environmental Impact & Decomposition Notice */}
-            <div className="p-4 rounded-2xl bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200/60 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs">
-              <div className="space-y-1">
-                <span className="font-bold text-teal-900 uppercase tracking-wider text-[11px] block">
-                  Environmental Impact & Footprint
-                </span>
-                <p className="text-teal-800 leading-relaxed">
-                  {result.disposal_guide.environmental_impact}
-                </p>
-              </div>
-              <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-xl border border-teal-200 text-teal-900 flex-shrink-0 text-center">
-                <span className="block text-[10px] font-semibold text-slate-500 uppercase">
-                  Decomposition Time
-                </span>
-                <span className="font-bold text-xs">{result.disposal_guide.decomposition_time}</span>
-              </div>
-            </div>
-          </div>
-        )}
+          );
+        })()}
 
         {/* Instant Accuracy Feedback & Scan Again Actions */}
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-slate-100">

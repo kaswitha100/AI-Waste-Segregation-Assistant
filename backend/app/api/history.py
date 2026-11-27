@@ -20,7 +20,10 @@ async def get_history(
 
     query = {}
     if current_user:
-        query["user_id"] = current_user.id
+        query["$or"] = [
+            {"user_id": current_user.id},
+            {"user_id": None}
+        ]
     
     if category and category.lower() != "all":
         query["category"] = category

@@ -25,12 +25,20 @@ const DEFAULT_USERS = [
   }
 ];
 
-const DISPOSAL_GUIDES = {
+export const DISPOSAL_GUIDES = {
   'Wet Waste': {
     category: 'Wet Waste',
-    bin_name: 'Green Bin',
+    bin_name: 'Organic / Compost Bin',
+    bin_color: 'Green',
     bin_color_hex: '#10B981',
+    primary_action: 'Home Composting or Municipal Organic Digestion',
     primary_rule: 'Compost organic waste. Never mix with plastic wrappers.',
+    steps: [
+      'Drain any excess gravy or liquid from organic kitchen scraps.',
+      'Remove any non-biodegradable stickers, plastic films, or plastic tags.',
+      'Place directly into the designated Green Compost Bin or community composting pit.',
+      'Cover with a layer of dry leaves or sawdust if home composting to avoid odor.'
+    ],
     step_by_step_instructions: [
       'Drain any excess gravy or liquid from organic kitchen scraps.',
       'Remove any non-biodegradable stickers, plastic films, or plastic tags.',
@@ -38,23 +46,33 @@ const DISPOSAL_GUIDES = {
       'Cover with a layer of dry leaves or sawdust if home composting to avoid odor.'
     ],
     dos: [
-      'Compost raw and cooked food leftovers, vegetable and fruit peelings.',
-      'Include tea leaves, coffee grounds, and crushed eggshells.',
-      'Keep bin aerated and clean regularly.'
+      'Do compost raw and cooked food leftovers, vegetable and fruit peelings.',
+      'Do include tea leaves, coffee grounds, and crushed eggshells.',
+      'Do keep bin aerated and clean regularly.'
     ],
     donts: [
-      'Do not throw plastic wraps, milk packets, or foil into the green bin.',
-      'Do not mix chemical cleaners, diapers, or hazardous materials.',
+      'Don\'t throw plastic wraps, milk packets, or foil into the green bin.',
+      'Don\'t mix chemical cleaners, diapers, or hazardous materials.',
       'Avoid dumping large volumes of excess water or soup.'
     ],
+    decomposition_time: '2 weeks to 3 months (via aerobic composting)',
     decomposition_time_estimate: '2 weeks to 3 months (via aerobic composting)',
+    environmental_impact: 'Diverting organic waste from landfills reduces methane emissions by up to 85% and produces nutrient-rich organic compost.',
     environmental_impact_summary: 'Diverting organic waste from landfills reduces methane emissions by up to 85% and produces nutrient-rich organic compost.'
   },
   'Recyclable Waste': {
     category: 'Recyclable Waste',
-    bin_name: 'Blue Bin',
+    bin_name: 'Recycling Collection Bin',
+    bin_color: 'Blue',
     bin_color_hex: '#2563EB',
+    primary_action: 'Clean, Dry, Flatten & Recycle',
     primary_rule: 'Clean, dry, and flatten recyclable materials before disposal.',
+    steps: [
+      'Rinse plastic bottles, soda cans, and containers with water to remove food residue.',
+      'Let items dry completely before binning to prevent mold contamination.',
+      'Flatten cardboard cartons and crush plastic bottles to conserve bin volume.',
+      'Place in the Blue Recycling Bin for municipal sorting and material recovery.'
+    ],
     step_by_step_instructions: [
       'Rinse plastic bottles, soda cans, and containers with water to remove food residue.',
       'Let items dry completely before binning to prevent mold contamination.',
@@ -62,23 +80,33 @@ const DISPOSAL_GUIDES = {
       'Place in the Blue Recycling Bin for municipal sorting and material recovery.'
     ],
     dos: [
-      'Recycle PET plastic bottles, clean cardboard, paper sheets, and clean metal cans.',
-      'Separate bottle caps and metal lids if requested by local recyclers.',
-      'Keep paper dry and free of oil or grease stains.'
+      'Do recycle PET plastic bottles, clean cardboard, paper sheets, and clean metal cans.',
+      'Do separate bottle caps and metal lids if requested by local recyclers.',
+      'Do keep paper dry and free of oil or grease stains.'
     ],
     donts: [
-      'Do not recycle greasy pizza boxes, food-soiled paper, or dirty napkins.',
-      'Do not place broken glass or ceramics directly without protective wrapping.',
-      'Do not bag recyclables in opaque black trash bags unless instructed.'
+      'Don\'t recycle greasy pizza boxes, food-soiled paper, or dirty napkins.',
+      'Don\'t place broken glass or ceramics directly without protective wrapping.',
+      'Don\'t bag recyclables in opaque black trash bags unless instructed.'
     ],
-    decomposition_time_estimate: 'Plastic: 450 years | Aluminum: 200-500 years | Glass: 1 Million+ years',
+    decomposition_time: 'Cardboard: 2 months | Aluminum: 200-500 years | Plastic Bottle: 450 years | Glass: 1 Million+ years',
+    decomposition_time_estimate: 'Cardboard: 2 months | Aluminum: 200-500 years | Plastic Bottle: 450 years | Glass: 1 Million+ years',
+    environmental_impact: 'Recycling 1 ton of plastic saves 5,774 kWh of energy, 16.3 barrels of oil, and 30 cubic yards of landfill space.',
     environmental_impact_summary: 'Recycling 1 ton of plastic saves 5,774 kWh of energy, 16.3 barrels of oil, and 30 cubic yards of landfill space.'
   },
   'Hazardous Waste': {
     category: 'Hazardous Waste',
-    bin_name: 'Red Bin',
+    bin_name: 'Hazardous & E-Waste Bin',
+    bin_color: 'Red',
     bin_color_hex: '#DC2626',
+    primary_action: 'Isolate & Hand Over to Authorized E-Waste / Hazardous Center',
     primary_rule: 'Store separately. Handle with caution and hand over to authorized e-waste/hazmat facilities.',
+    steps: [
+      'Store spent batteries, electronics, or chemical containers in a cool, dry place away from heat.',
+      'Tape battery terminals with non-conductive tape to prevent short circuits.',
+      'Keep chemical bottles tightly sealed in their original labeled containers.',
+      'Hand over to designated hazardous waste collection drop-offs or e-waste recycling kiosks.'
+    ],
     step_by_step_instructions: [
       'Store spent batteries, electronics, or chemical containers in a cool, dry place away from heat.',
       'Tape battery terminals with non-conductive tape to prevent short circuits.',
@@ -86,52 +114,72 @@ const DISPOSAL_GUIDES = {
       'Hand over to designated hazardous waste collection drop-offs or e-waste recycling kiosks.'
     ],
     dos: [
-      'Segregate alkaline batteries, lithium-ion cells, and electronic peripherals.',
-      'Store expired medicines and medical waste in sealed bags.',
-      'Wash hands immediately after handling hazardous or toxic waste.'
+      'Do segregate alkaline batteries, lithium-ion cells, and electronic peripherals.',
+      'Do store expired medicines and medical waste in sealed bags.',
+      'Do wash hands immediately after handling hazardous or toxic waste.'
     ],
     donts: [
       'Never dump batteries, acids, or toxic chemicals into household drains.',
       'Never incinerate batteries or spray cans (risk of explosion).',
       'Never mix hazardous items with wet organic compost.'
     ],
+    decomposition_time: 'Non-biodegradable; persistent heavy metals (lead, cadmium, mercury) remain forever.',
     decomposition_time_estimate: 'Non-biodegradable; persistent heavy metals (lead, cadmium, mercury) remain forever.',
+    environmental_impact: 'Proper e-waste disposal prevents toxic heavy metals from contaminating groundwater and soil ecosystems.',
     environmental_impact_summary: 'Proper e-waste disposal prevents toxic heavy metals from contaminating groundwater and soil ecosystems.'
   },
   'Dry Waste': {
     category: 'Dry Waste',
-    bin_name: 'Blue / Grey Bin',
+    bin_name: 'Dry Domestic Waste Bin',
+    bin_color: 'Grey',
     bin_color_hex: '#4B5563',
+    primary_action: 'Segregate Non-Recyclable Dry Packaging',
     primary_rule: 'Ensure items are dry and compact before discarding.',
+    steps: [
+      'Ensure items are completely free of organic moisture.',
+      'Bundle multilayer wrappers and dry clean packaging.',
+      'Place into the Grey or Blue dry waste container.'
+    ],
     step_by_step_instructions: [
       'Ensure items are completely free of organic moisture.',
       'Bundle multilayer wrappers and dry clean packaging.',
       'Place into the Grey or Blue dry waste container.'
     ],
     dos: [
-      'Discard multi-laminated packaging, dry rubber, clean foam, and textiles.',
-      'Keep separated from food waste.'
+      'Do discard multi-laminated packaging, dry rubber, clean foam, and textiles.',
+      'Do keep separated from food waste.'
     ],
     donts: [
-      'Do not mix with wet food or garden scraps.',
-      'Do not dispose of hazardous batteries or electronic items in the dry bin.'
+      'Don\'t mix with wet food or garden scraps.',
+      'Don\'t dispose of hazardous batteries or electronic items in the dry bin.'
     ],
+    decomposition_time: '20 to 100+ years depending on plastic polymer composition.',
     decomposition_time_estimate: '20 to 100+ years depending on plastic polymer composition.',
+    environmental_impact: 'Segregating dry non-recyclables allows waste-to-energy recovery and avoids open-air dump fires.',
     environmental_impact_summary: 'Segregating dry non-recyclables allows waste-to-energy recovery and avoids open-air dump fires.'
   },
   'Uncertain / Mixed Waste': {
     category: 'Uncertain / Mixed Waste',
-    bin_name: 'Amber Bin / Inspection Required',
+    bin_name: 'Inspection / Sorting Bin',
+    bin_color: 'Amber',
     bin_color_hex: '#D97706',
+    primary_action: 'Manual Inspection & Multi-Material Disassembly Required',
     primary_rule: 'Manual inspection recommended before disposal.',
+    steps: [
+      'Examine the object to see if it can be separated into distinct materials.',
+      'Remove recyclable components (e.g. plastic caps or paper liners).',
+      'If unsure, consult the segregation guide or local waste guidelines.'
+    ],
     step_by_step_instructions: [
       'Examine the object to see if it can be separated into distinct materials.',
       'Remove recyclable components (e.g. plastic caps or paper liners).',
       'If unsure, consult the segregation guide or local waste guidelines.'
     ],
-    dos: ['Double-check for recyclable symbols (1-7 Resin codes).'],
-    donts: ['Do not contaminate organic green bins with unidentified composite materials.'],
+    dos: ['Do double-check for recyclable symbols (1-7 Resin codes).'],
+    donts: ['Don\'t contaminate organic green bins with unidentified composite materials.'],
+    decomposition_time: 'Variable depending on composite materials.',
     decomposition_time_estimate: 'Variable depending on composite materials.',
+    environmental_impact: 'Preventing contamination of clean recycling streams ensures higher recovery yields.',
     environmental_impact_summary: 'Preventing contamination of clean recycling streams ensures higher recovery yields.'
   }
 };
@@ -140,17 +188,20 @@ const DISPOSAL_GUIDES = {
 const DEFAULT_SCANS = [
   {
     id: 'scan-sample-1',
+    _id: 'scan-sample-1',
     item_name: 'Water Bottle (PET Plastic)',
     category: 'Recyclable Waste',
     confidence: 0.94,
-    notes: 'Sample PET bottle scan',
+    notes: 'PET beverage bottle',
     eco_points_earned: 15,
     co2_saved_kg: 0.35,
     disposal_guide: DISPOSAL_GUIDES['Recyclable Waste'],
+    timestamp: new Date(Date.now() - 3600000 * 4).toISOString(),
     created_at: new Date(Date.now() - 3600000 * 4).toISOString()
   },
   {
     id: 'scan-sample-2',
+    _id: 'scan-sample-2',
     item_name: 'Banana Peel / Fruit Scrap',
     category: 'Wet Waste',
     confidence: 0.89,
@@ -158,6 +209,7 @@ const DEFAULT_SCANS = [
     eco_points_earned: 10,
     co2_saved_kg: 0.20,
     disposal_guide: DISPOSAL_GUIDES['Wet Waste'],
+    timestamp: new Date(Date.now() - 3600000 * 24).toISOString(),
     created_at: new Date(Date.now() - 3600000 * 24).toISOString()
   }
 ];
@@ -186,6 +238,35 @@ export const getStoredScans = () => {
 
 export const saveStoredScans = (scans) => {
   localStorage.setItem('waste_ai_local_scans', JSON.stringify(scans));
+};
+
+/**
+ * Normalizes any disposal guide object to ensure all expected properties are present.
+ */
+export const normalizeDisposalGuide = (guide, category = 'Dry Waste') => {
+  const fallback = DISPOSAL_GUIDES[category] || DISPOSAL_GUIDES['Dry Waste'];
+  if (!guide || typeof guide !== 'object') return fallback;
+
+  const steps = guide.steps || guide.step_by_step_instructions || fallback.steps;
+  const dos = guide.dos || fallback.dos;
+  const donts = guide.donts || fallback.donts;
+
+  return {
+    category: guide.category || category,
+    bin_name: guide.bin_name || fallback.bin_name,
+    bin_color: guide.bin_color || fallback.bin_color,
+    bin_color_hex: guide.bin_color_hex || fallback.bin_color_hex,
+    primary_action: guide.primary_action || guide.primary_rule || fallback.primary_action,
+    primary_rule: guide.primary_rule || guide.primary_action || fallback.primary_rule,
+    steps: Array.isArray(steps) && steps.length > 0 ? steps : fallback.steps,
+    step_by_step_instructions: Array.isArray(steps) && steps.length > 0 ? steps : fallback.step_by_step_instructions,
+    dos: Array.isArray(dos) ? dos : fallback.dos,
+    donts: Array.isArray(donts) ? donts : fallback.donts,
+    decomposition_time: guide.decomposition_time || guide.decomposition_time_estimate || fallback.decomposition_time,
+    decomposition_time_estimate: guide.decomposition_time_estimate || guide.decomposition_time || fallback.decomposition_time_estimate,
+    environmental_impact: guide.environmental_impact || guide.environmental_impact_summary || fallback.environmental_impact,
+    environmental_impact_summary: guide.environmental_impact_summary || guide.environmental_impact || fallback.environmental_impact_summary
+  };
 };
 
 /**
@@ -218,7 +299,6 @@ export const clientSideClassifyImage = async (imageSource) => {
           totalG += data[i + 1];
           totalB += data[i + 2];
 
-          // Simple horizontal edge contrast
           if (i > 4) {
             const diff = Math.abs(data[i] - data[i - 4]);
             if (diff > 35) edgeScore++;
@@ -239,7 +319,6 @@ export const clientSideClassifyImage = async (imageSource) => {
         let topPreds = [];
 
         if (avgG > avgR && avgG > avgB && sat > 0.18) {
-          // Dominant Green / Organic
           category = 'Wet Waste';
           itemName = 'Vegetable Scrap / Organic Waste';
           confidence = 0.87;
@@ -249,7 +328,6 @@ export const clientSideClassifyImage = async (imageSource) => {
             { label: 'Biodegradable Tissue', confidence: 0.05, category }
           ];
         } else if (avgR > avgG && avgR > 130 && sat > 0.25) {
-          // Warm Orange/Yellow/Red -> Organic fruits or citrus
           category = 'Wet Waste';
           itemName = 'Fruit Peel / Organic Scrap';
           confidence = 0.84;
@@ -259,7 +337,6 @@ export const clientSideClassifyImage = async (imageSource) => {
             { label: 'Organic Compostable', confidence: 0.06, category }
           ];
         } else if (maxVal > 170 && sat < 0.20) {
-          // High Brightness, Low Saturation -> Clean Cardboard, Paper, White Plastic
           category = 'Recyclable Waste';
           itemName = 'Clean Cardboard / Plastic Container';
           confidence = 0.89;
@@ -269,7 +346,6 @@ export const clientSideClassifyImage = async (imageSource) => {
             { label: 'Aluminum Can', confidence: 0.04, category }
           ];
         } else if (edgeDensity > 0.15 || (sat > 0.35 && avgB > 100)) {
-          // Complex edges & color patterns -> Electronics, Battery, or Chemical
           category = 'Hazardous Waste';
           itemName = 'E-Waste / Battery / Circuit Item';
           confidence = 0.78;
@@ -289,8 +365,13 @@ export const clientSideClassifyImage = async (imageSource) => {
           ];
         }
 
-        const guide = DISPOSAL_GUIDES[category] || DISPOSAL_GUIDES['Dry Waste'];
+        const rawGuide = DISPOSAL_GUIDES[category] || DISPOSAL_GUIDES['Dry Waste'];
+        const guide = normalizeDisposalGuide(rawGuide, category);
+        const recordId = 'scan-' + Date.now();
+
         const result = {
+          id: recordId,
+          _id: recordId,
           item_name: itemName,
           category,
           confidence,
@@ -298,23 +379,24 @@ export const clientSideClassifyImage = async (imageSource) => {
           top_predictions: topPreds,
           disposal_guide: guide,
           eco_points_earned: category === 'Recyclable Waste' ? 15 : category === 'Wet Waste' ? 10 : 12,
-          co2_saved_kg: category === 'Recyclable Waste' ? 0.35 : 0.20
+          co2_saved_kg: category === 'Recyclable Waste' ? 0.35 : 0.20,
+          timestamp: new Date().toISOString(),
+          created_at: new Date().toISOString()
         };
 
         // Persist to local scan history
         const currentScans = getStoredScans();
-        currentScans.unshift({
-          id: 'scan-' + Date.now(),
-          ...result,
-          created_at: new Date().toISOString()
-        });
+        currentScans.unshift(result);
         saveStoredScans(currentScans);
 
         resolve(result);
       } catch (err) {
         console.warn('[Client Classifier] Fallback heuristic used', err);
-        const guide = DISPOSAL_GUIDES['Recyclable Waste'];
-        resolve({
+        const guide = normalizeDisposalGuide(DISPOSAL_GUIDES['Recyclable Waste'], 'Recyclable Waste');
+        const recordId = 'scan-' + Date.now();
+        const fallbackResult = {
+          id: recordId,
+          _id: recordId,
           item_name: 'Plastic Container (Clean)',
           category: 'Recyclable Waste',
           confidence: 0.82,
@@ -324,14 +406,23 @@ export const clientSideClassifyImage = async (imageSource) => {
           ],
           disposal_guide: guide,
           eco_points_earned: 15,
-          co2_saved_kg: 0.35
-        });
+          co2_saved_kg: 0.35,
+          timestamp: new Date().toISOString(),
+          created_at: new Date().toISOString()
+        };
+        const currentScans = getStoredScans();
+        currentScans.unshift(fallbackResult);
+        saveStoredScans(currentScans);
+        resolve(fallbackResult);
       }
     };
 
     img.onerror = () => {
-      const guide = DISPOSAL_GUIDES['Recyclable Waste'];
-      resolve({
+      const guide = normalizeDisposalGuide(DISPOSAL_GUIDES['Recyclable Waste'], 'Recyclable Waste');
+      const recordId = 'scan-' + Date.now();
+      const fallbackResult = {
+        id: recordId,
+        _id: recordId,
         item_name: 'Recyclable Beverage Bottle',
         category: 'Recyclable Waste',
         confidence: 0.85,
@@ -341,8 +432,14 @@ export const clientSideClassifyImage = async (imageSource) => {
         ],
         disposal_guide: guide,
         eco_points_earned: 15,
-        co2_saved_kg: 0.35
-      });
+        co2_saved_kg: 0.35,
+        timestamp: new Date().toISOString(),
+        created_at: new Date().toISOString()
+      };
+      const currentScans = getStoredScans();
+      currentScans.unshift(fallbackResult);
+      saveStoredScans(currentScans);
+      resolve(fallbackResult);
     };
 
     if (typeof imageSource === 'string') {

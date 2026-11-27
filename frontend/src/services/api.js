@@ -6,8 +6,40 @@ import {
   saveStoredScans,
   clientSideClassifyImage,
   getClientAnalyticsSummary,
-  getDisposalGuideData
+  getDisposalGuideData,
+  normalizeDisposalGuide
 } from './resilientClient';
+
+// Helper to save every scan (backend or local) into persistent local history
+const saveScanToLocalHistory = (result, notes) => {
+  try {
+    const recordId = result.id || result._id || 'scan-' + Date.now();
+    const normalized = {
+      ...result,
+      id: recordId,
+      _id: recordId,
+      item_name: result.item_name || 'Unrecognized Item',
+      category: result.category || 'Uncertain / Mixed Waste',
+      confidence: typeof result.confidence === 'number' ? result.confidence : 0.85,
+      is_uncertain: Boolean(result.is_uncertain),
+      top_predictions: result.top_predictions || [],
+      disposal_guide: normalizeDisposalGuide(result.disposal_guide, result.category),
+      notes: notes || result.notes || '',
+      eco_points_earned: result.eco_points_earned || 10,
+      co2_saved_kg: result.co2_saved_kg || 0.25,
+      timestamp: result.timestamp || result.created_at || new Date().toISOString(),
+      created_at: result.created_at || result.timestamp || new Date().toISOString()
+    };
+    const currentScans = getStoredScans();
+    const filtered = currentScans.filter(s => s.id !== recordId && s._id !== recordId);
+    filtered.unshift(normalized);
+    saveStoredScans(filtered);
+    return normalized;
+  } catch (e) {
+    console.warn('Failed to save scan to local history', e);
+    return result;
+  }
+};
 
 // Resolve base URL from VITE_API_URL env variable or fall back to production Render backend / local proxy
 const getBaseURL = () => {
@@ -27,7 +59,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10s timeout to allow fast resilient fallback if remote host is cold
+  timeout: 10000,
 });
 
 // Request interceptor to attach JWT token
@@ -67,7 +99,6 @@ export const authAPI = {
       let matched = users.find(u => u.email.toLowerCase() === normalizedEmail);
 
       if (!matched) {
-        // Create dynamic user for quick testing if not found
         matched = {
           id: 'user-' + Date.now(),
           email: normalizedEmail,
@@ -139,30 +170,36 @@ export const authAPI = {
   },
 };
 
-// Classification Endpoints with Computer Vision Fallback
+// Classification Endpoints with Auto-History Persistence & Safe Formatting
 export const classifyAPI = {
   uploadImage: async (formData, notes) => {
     try {
-      return await api.post(`/classify/upload${notes ? `?notes=${encodeURIComponent(notes)}` : ''}`, formData, {
+      const res = await api.post(`/classify/upload${notes ? `?notes=${encodeURIComponent(notes)}` : ''}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
+      const saved = saveScanToLocalHistory(res.data, notes);
+      return { data: saved };
     } catch (err) {
       console.warn('[API Classify] Backend unreachable. Running in-browser Computer Vision classification.', err.message);
       const file = formData.get('file');
       const result = await clientSideClassifyImage(file);
       if (notes) result.notes = notes;
-      return { data: result };
+      const saved = saveScanToLocalHistory(result, notes);
+      return { data: saved };
     }
   },
 
   cameraCapture: async (imageBase64, notes) => {
     try {
-      return await api.post('/classify/camera', { image_base64: imageBase64, notes });
+      const res = await api.post('/classify/camera', { image_base64: imageBase64, notes });
+      const saved = saveScanToLocalHistory(res.data, notes);
+      return { data: saved };
     } catch (err) {
       console.warn('[API Classify] Backend unreachable. Running in-browser Camera classification.', err.message);
       const result = await clientSideClassifyImage(imageBase64);
       if (notes) result.notes = notes;
-      return { data: result };
+      const saved = saveScanToLocalHistory(result, notes);
+      return { data: saved };
     }
   },
 
@@ -175,22 +212,68 @@ export const classifyAPI = {
   },
 };
 
-// History Endpoints with Resilient Datastore
+// History Endpoints with Merged Multi-Source Synchronization
 export const historyAPI = {
   getHistory: async (params) => {
+    let backendItems = [];
     try {
-      return await api.get('/history', { params });
+      const res = await api.get('/history', { params });
+      if (Array.isArray(res.data)) {
+        backendItems = res.data;
+      } else if (res.data?.items && Array.isArray(res.data.items)) {
+        backendItems = res.data.items;
+      }
     } catch (err) {
-      return { data: getStoredScans() };
+      console.warn('[API History] Backend unreachable. Serving cached & local scans.', err.message);
     }
+
+    const localScans = getStoredScans();
+    const map = new Map();
+
+    // Prioritize and merge records
+    [...localScans, ...backendItems].forEach((item) => {
+      const id = item.id || item._id;
+      if (id && !map.has(id)) {
+        map.set(id, {
+          ...item,
+          id,
+          _id: id,
+          disposal_guide: normalizeDisposalGuide(item.disposal_guide, item.category),
+          confidence: typeof item.confidence === 'number' ? item.confidence : 0.85,
+          timestamp: item.timestamp || item.created_at || new Date().toISOString()
+        });
+      }
+    });
+
+    let merged = Array.from(map.values());
+    merged.sort((a, b) => new Date(b.timestamp || 0) - new Date(a.timestamp || 0));
+
+    if (params?.category && params.category.toLowerCase() !== 'all') {
+      merged = merged.filter(i => i.category?.toLowerCase() === params.category.toLowerCase());
+    }
+
+    if (params?.search && params.search.trim()) {
+      const q = params.search.toLowerCase().trim();
+      merged = merged.filter(i => (i.item_name || '').toLowerCase().includes(q));
+    }
+
+    return {
+      data: {
+        items: merged,
+        total: merged.length,
+        page: params?.page || 1,
+        limit: params?.limit || 10
+      }
+    };
   },
 
   getDetail: async (id) => {
     try {
-      return await api.get(`/history/${id}`);
+      const res = await api.get(`/history/${id}`);
+      return res;
     } catch (err) {
       const scans = getStoredScans();
-      const item = scans.find(s => s.id === id) || scans[0];
+      const item = scans.find(s => s.id === id || s._id === id) || scans[0];
       return { data: item };
     }
   },
@@ -205,12 +288,13 @@ export const historyAPI = {
 
   deleteItem: async (id) => {
     try {
-      return await api.delete(`/history/${id}`);
+      await api.delete(`/history/${id}`);
     } catch (err) {
-      const scans = getStoredScans().filter(s => s.id !== id);
-      saveStoredScans(scans);
-      return { data: { success: true } };
+      // ignore
     }
+    const scans = getStoredScans().filter(s => s.id !== id && s._id !== id);
+    saveStoredScans(scans);
+    return { data: { success: true } };
   },
 };
 
@@ -218,7 +302,8 @@ export const historyAPI = {
 export const analyticsAPI = {
   getSummary: async () => {
     try {
-      return await api.get('/analytics/summary');
+      const res = await api.get('/analytics/summary');
+      return res;
     } catch (err) {
       return { data: getClientAnalyticsSummary() };
     }
